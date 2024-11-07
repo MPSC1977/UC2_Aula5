@@ -1,0 +1,40 @@
+
+mysql> CREATE DATABASE bd_loja;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> USE bd_loja;
+Database changed
+mysql> CREATE TABLE tb_produtos(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Produto VARCHAR(255),
+    Quantidade INT,
+    Valor DECIMAL);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> LOAD DATA INFILE "C:\\Users\\51134552024.01\\Documents\\MARCOS CARVALHO\\UC_2\\Aula5\\Aula5"
+    -> INTO TABLE tb_produtos
+    -> FIELDS TERMINATED BY ","
+    -> LINES TERMINATED BY "\n"
+    -> IGNORE 1 ROWS
+    -> (NomeProduto, Categoria, QuantidadeEstoque, Valor);
+ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement
+
+mysql> SHOW VARIABLES LIKE 'secure_file_priv';
++------------------+------------------------------------------------+
+| Variable_name    | Value                                          |
++------------------+------------------------------------------------+
+| secure_file_priv | C:\ProgramData\MySQL\MySQL Server 8.1\Uploads\ |
++------------------+------------------------------------------------+
+1 row in set (0.02 sec)
+
+mysql> SET GLOBAL local_infile=1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> LOAD DATA INFILE "C:\\ProgramData\\MySQL\\MySQL Server 8.1\\Uploads\\base4.csv"
+    INTO TABLE tb_produtos
+    FIELDS TERMINATED BY ";"
+    LINES TERMINATED BY "\n"
+    IGNORE 1 ROWS
+    (Produto, Quantidade, Valor);
+Query OK, 46 rows affected, 15 warnings (0.01 sec)
+Records: 46  Deleted: 0  Skipped: 0  Warnings: 15
